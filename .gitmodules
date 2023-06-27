@@ -29,3 +29,6 @@
 [submodule "governance"]
 	path = governance
 	url = https://github.com/ensdomains/governance
+[submodule "lib/governance"]
+	path = lib/governance
+	url = https://github.com/ensdomains/governance
