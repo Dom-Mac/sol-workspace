@@ -26,3 +26,6 @@
 	path = lib/prb-test
 	url = https://github.com/paulrberg/prb-test
 	branch = 0.3.1
+[submodule "governance"]
+	path = governance
+	url = https://github.com/ensdomains/governance
