@@ -5,4 +5,5 @@ solady/=lib/solady/src/
 create3-factory/=lib/create3-factory/src/
 @prb/contracts/=lib/prb-contracts/src/
 @prb/test/=lib/prb-test/src/
-@openzeppelin/=lib/openzeppelin-contracts/contracts/
+@openzeppelin/=lib/openzeppelin-contracts
+governance/=lib/governance/

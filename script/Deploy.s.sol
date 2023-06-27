@@ -2,19 +2,31 @@
 pragma solidity ^0.8;
 
 import "forge-std/Script.sol";
-import {CREATE3Factory} from "create3-factory/CREATE3Factory.sol";
 import {FreeENSToken} from "contracts/FreeENSToken.sol";
+import {MockTimelock} from "contracts/MockTimelock.sol";
+import {MockENSGovernor} from "contracts/MockENSGovernor.sol";
 
 contract DeployScript is Script {
-    CREATE3Factory create3Factory = CREATE3Factory(0x9fBB3DF7C40Da2e5A0dE984fFE2CCB7C47cd0ABf);
-    bytes32 salt = keccak256(bytes(vm.envString("SALT")));
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
-    function run() public returns (FreeENSToken myContract) {
-        vm.startBroadcast(deployerPrivateKey);
+    uint256 public freeSupply = 100_000 ether;
+    uint256 public airdropSupply = 100_000 ether;
+    uint256 public claimPeriodEnds_ = 100 days;
+    address public user = address(333);
+    uint256 public minDelay = 1 days;
 
-        myContract = FreeENSToken(create3Factory.deploy(salt, bytes.concat(type(FreeENSToken).creationCode)));
+    function run() public returns (FreeENSToken ensToken, MockTimelock timelock, MockENSGovernor governor) {
+        // vm.startBroadcast(deployerPrivateKey);
 
-        vm.stopBroadcast();
+        address[] memory proposers = new address[](1);
+        proposers[0] = msg.sender;
+
+        ensToken = new FreeENSToken(claimPeriodEnds_, freeSupply, airdropSupply);
+
+        timelock = new MockTimelock(minDelay, proposers, proposers, msg.sender);
+
+        governor = new MockENSGovernor(ensToken, timelock);
+
+        // vm.stopBroadcast();
     }
 }

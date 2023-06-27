@@ -3,9 +3,9 @@ pragma solidity ^0.8;
 
 import "forge-std/console2.sol";
 import "./helper/Setup.sol";
-import "contracts/FreeENSToken.sol";
-import "contracts/TimelockController.sol";
-import {ENSGovernor} from "contracts/ENSGovernor.sol";
+import {FreeENSToken} from "contracts/FreeENSToken.sol";
+import {MockTimelock} from "contracts/MockTimelock.sol";
+import {MockENSGovernor} from "contracts/MockENSGovernor.sol";
 
 contract ENSTest is Setup {
     //*********************************************************************//
@@ -13,8 +13,8 @@ contract ENSTest is Setup {
     //*********************************************************************//
 
     FreeENSToken public ensToken;
-    TimelockController public timelock;
-    ENSGovernor public governor;
+    MockTimelock public timelock;
+    MockENSGovernor public governor;
 
     uint256 public freeSupply = 100_000 ether;
     uint256 public airdropSupply = 100_000 ether;
@@ -30,13 +30,13 @@ contract ENSTest is Setup {
         Setup.setUp();
 
         address[] memory proposers = new address[](1);
-        proposers[0] = address(1);
+        proposers[0] = user;
 
         ensToken = new FreeENSToken(claimPeriodEnds_, freeSupply, airdropSupply);
 
-        timelock = new TimelockController(minDelay, proposers, proposers);
+        timelock = new MockTimelock(minDelay, proposers, proposers, user);
 
-        // governor = new ENSGovernor(ensToken, timelock);
+        governor = new MockENSGovernor(ensToken, timelock);
     }
 
     //*********************************************************************//
@@ -46,10 +46,11 @@ contract ENSTest is Setup {
     function testDeploy() public {
         assertTrue(address(ensToken) != address(0));
         assertTrue(address(timelock) != address(0));
+        assertTrue(address(governor) != address(0));
     }
 
     function testFreeMint() public {
-        ensToken.mint(user, freeSupply);
+        ensToken.freeMint(user, freeSupply);
 
         assertEq(ensToken.balanceOf(user), freeSupply);
     }

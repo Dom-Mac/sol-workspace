@@ -6,7 +6,9 @@ fs_permissions = [{ access = "read", path = "./deployments/"}]
 [rpc_endpoints]
 goerli = "${RPC_URL_GOERLI}"
 mainnet = "${RPC_URL_MAINNET}"
+sepolia = "${RPC_URL_SEPOLIA}"
 
 [etherscan]
 goerli = {key = "${ETHERSCAN_API_KEY}", url = "https://api-goerli.etherscan.io/api"}
 mainnet = {key = "${ETHERSCAN_API_KEY}"}
+sepolia = {key = "${ETHERSCAN_API_KEY}", url = "https://api-sepolia.etherscan.io/api"}

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "./ENSToken.sol";
+import "governance/contracts/ENSToken.sol";
 
 /**
  * @dev Free ENS token
@@ -11,7 +11,7 @@ contract FreeENSToken is ENSToken {
         ENSToken(freeSupply_, airdropSupply_, claimPeriodEnds_)
     {}
 
-    function mint(address to_, uint256 amount_) public override {
+    function freeMint(address to_, uint256 amount_) public {
         _mint(to_, amount_);
     }
 }
